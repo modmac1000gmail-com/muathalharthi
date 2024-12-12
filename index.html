@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>الملف الشخصي | Smart Links</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #8B5CF6;
+            --secondary: #EC4899;
+            --gradient: linear-gradient(135deg, #8B5CF6, #EC4899);
+            --surface: rgba(255, 255, 255, 0.9);
+            --background: #f0f2f5;
+            --text: #1a1a1a;
+            --text-light: #666666;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --blur: blur(10px);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            color: var(--text);
+            background-image: 
+                radial-gradient(at 80% 0%, hsla(189,100%,56%,0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, hsla(355,100%,93%,0.1) 0px, transparent 50%),
+                radial-gradient(at 80% 100%, hsla(242,100%,70%,0.1) 0px, transparent 50%);
+        }
+
+        .profile-container {
+            max-width: 680px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            backdrop-filter: var(--blur);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .profile-cover {
+            height: 240px;
+            background: var(--gradient);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-cover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+        }
+
+        .profile-avatar-container {
+            position: relative;
+            margin-top: -60px;
+            z-index: 2;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--surface);
+            box-shadow: var(--shadow-lg);
+            margin: 0 auto;
+            object-fit: cover;
+            background: var(--surface);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-info {
+            margin-top: 1rem;
+            padding: 2rem;
+            background: var(--surface);
+            border-radius: 24px;
+            box-shadow: var(--shadow-md);
+            backdrop-filter: var(--blur);
+        }
+
+        .profile-name {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .profile-bio {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .badges {
+            display: flex;
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 0.5rem 1rem;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: var(--primary);
+            backdrop-filter: var(--blur);
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .social-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--surface);
+            color: var(--primary);
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px) rotate(8deg);
+            background: var(--gradient);
+            color: white;
+        }
+
+        .links-container {
+            display: grid;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .link-card {
+            background: var(--surface);
+            padding: 1.25rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.3s ease;
+            backdrop-filter: var(--blur);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .link-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .link-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .link-icon {
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient);
+            color: white;
+            border-radius: 16px;
+            font-size: 1.25rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .link-details {
+            flex: 1;
+            position: relative;
+            z-index: 2;
+        }
+
+        .link-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .link-url {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        .link-stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @media (max-width: 480px) {
+            .profile-cover {
+                height: 180px;
+            }
+
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+            }
+
+            .profile-info {
+                padding: 1.5rem;
+            }
+
+            .badges {
+                gap: 0.5rem;
+            }
+
+            .link-card {
+                padding: 1rem;
+            }
+
+            .link-icon {
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+
+
+
+
+
+        .preloader {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loader-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at center, #1a1a1a 0%, #000 70%);
+}
+
+.glowing-container {
+    position: relative;
+    padding: 50px;
+}
+
+.glow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    filter: blur(60px);
+    background: linear-gradient(45deg, 
+        rgba(139, 92, 246, 0.3),
+        rgba(236, 72, 153, 0.3),
+        rgba(6, 182, 212, 0.3));
+    animation: glowPulse 3s infinite;
+}
+
+.name-wrapper {
+    position: relative;
+    z-index: 2;
+}
+
+.name-box {
+    text-align: center;
+    position: relative;
+}
+
+.main-name {
+    font-size: 4em;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    background: linear-gradient(to right, #8B5CF6, #EC4899, #06B6D4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: nameGlow 2s infinite;
+}
+
+.sub-text {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.2em;
+    margin-top: 10px;
+    opacity: 0;
+    animation: fadeInOut 2s infinite;
+}
+
+.loading-effect {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.particle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #fff;
+    animation: particleFloat 1.5s infinite;
+}
+
+.particle:nth-child(1) {
+    animation-delay: 0s;
+    background: #8B5CF6;
+}
+
+.particle:nth-child(2) {
+    animation-delay: 0.2s;
+    background: #EC4899;
+}
+
+.particle:nth-child(3) {
+    animation-delay: 0.4s;
+    background: #06B6D4;
+}
+
+@keyframes glowPulse {
+    0%, 100% {
+        opacity: 0.5;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes nameGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.5));
+    }
+    50% {
+        filter: drop-shadow(0 0 30px rgba(236, 72, 153, 0.8));
+    }
+}
+
+@keyframes fadeInOut {
+    0%, 100% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes particleFloat {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-20px) scale(1.5);
+    }
+}
+
+/* تأثير الاختفاء */
+.preloader.fade-out {
+    animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+
+    </style>
+</head>
+<body>
+
+    <div id="preloader" class="preloader">
+        <div class="loader-wrapper">
+            <div class="glowing-container">
+                <div class="glow"></div>
+                <div class="name-wrapper">
+                    <div class="name-box">
+                        <h1 class="main-name">معاذ الحارثي</h1>
+                        <div class="sub-text">جاري التحميل...</div>
+                    </div>
+                    <div class="loading-effect">
+                        <span class="particle"></span>
+                        <span class="particle"></span>
+                        <span class="particle"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+  
+
+
+
+
+
+
+
+
+
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-cover"></div>
+            <div class="profile-avatar-container">
+                <img src="https://cdn.arabsstock.com/uploads/vectors/22735/preview/illustration-22735-moaz-arabic-name-boys-manuscript-name-moaz-brown-ar-preview.webp" alt="الصورة الشخصية" class="profile-avatar floating">
+            </div>
+            
+            <div class="profile-info">
+                <h1 class="profile-name">معاذ ماجد الحارثي </h1>
+                <p class="profile-bio">مطور ومصمم مواقع متخصص في تجربة المستخدم وتطوير الواجهات التفاعلية</p>
+                
+                <div class="badges">
+                    <span class="badge">🌟 حساب موثق</span>
+                    <span class="badge">👨‍💻 مطور</span>
+                    <span class="badge">🎨 مصمم</span>
+                </div>
+
+                <div class="social-links">
+                    <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-btn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-btn"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="links-container" id="publicLinks">
+            <!-- سيتم إضافة الروابط هنا ديناميكياً -->
+        </div>
+    </div>
+
+    <script>
+        // استرجاع الروابط من localStorage
+        function getLinks() {
+            return JSON.parse(localStorage.getItem('smartLinks') || '[]');
+        }
+
+        // تحديث عدد المشاهدات
+        function incrementViews(linkId) {
+            let links = getLinks();
+            const linkIndex = links.findIndex(link => link.id === linkId);
+            if(linkIndex !== -1) {
+                links[linkIndex].views = (links[linkIndex].views || 0) + 1;
+                localStorage.setItem('smartLinks', JSON.stringify(links));
+            }
+        }
+
+        // تحديث عدد النقرات
+        function incrementClicks(linkId) {
+            let links = getLinks();
+            const linkIndex = links.findIndex(link => link.id === linkId);
+            if(linkIndex !== -1) {
+                links[linkIndex].clicks = (links[linkIndex].clicks || 0) + 1;
+                localStorage.setItem('smartLinks', JSON.stringify(links));
+            }
+        }
+
+        // عرض الروابط
+        function displayPublicLinks() {
+            const links = getLinks();
+            const publicLinks = document.getElementById('publicLinks');
+            
+            publicLinks.innerHTML = links.map(link => `
+                <a href="${link.url}" 
+                   class="link-card" 
+                   target="_blank" 
+                   onclick="incrementClicks(${link.id})"
+                   data-link-id="${link.id}">
+                    <div class="link-icon">
+                        <i class="fas ${getLinkIcon(link.type)}"></i>
+                    </div>
+                    <div class="link-details">
+                        <div class="link-title">${link.title}</div>
+                        <div class="link-url">${link.url}</div>
+                        <div class="link-stats">
+                            <span><i class="fas fa-eye"></i> ${link.views || 0}</span>
+                            <span><i class="fas fa-mouse-pointer"></i> ${link.clicks || 0}</span>
+                        </div>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        // تحديد أيقونة الرابط حسب نوعه
+        function getLinkIcon(type) {
+            switch(type) {
+                case 'phone':
+                    return 'fa-phone';
+                case 'map':
+                    return 'fa-map-marker-alt';
+                default:
+                    return 'fa-link';
+            }
+        }
+
+        // تحديث المشاهدات لكل الروابط عند تحميل الصفحة
+        function updateAllLinksViews() {
+            let links = getLinks();
+            links.forEach(link => {
+                incrementViews(link.id);
+            });
+            displayPublicLinks();
+        }
+
+        // تشغيل الدوال عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', () => {
+            displayPublicLinks();
+            updateAllLinksViews();
+        });
+    </script>
+</body>
+</html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const preloader = document.getElementById('preloader');
+        
+        // تأثير دخول متقدم
+        setTimeout(() => {
+            document.querySelectorAll('.particle').forEach(particle => {
+                particle.style.animation = 'particleFloat 1.5s infinite';
+            });
+        }, 300);
+    
+        // إخفاء البريلودر
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                preloader.classList.add('fade-out');
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 1000);
+            }, 2500);
+        });
+    });
+    </script>
+    
